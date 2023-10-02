@@ -24,11 +24,10 @@ model.fit(x_train, y_train, epochs=5)
 model.evaluate(x_test, y_test)
 
 sample_index = 42;
-sample = tf.constant([x_test[sample_index]])
-sample_label = tf.constant(y_test[sample_index])
+sample = x_test[sample_index:sample_index + 1]
+sample_label = y_test[sample_index]
 
 prediction = model.predict(sample)[0]
 
-print(prediction)
-print(np.argmax(prediction, axis=-1))
-print(sample_label)
+print('observed', sample_label)
+print('predicted', np.argmax(prediction, axis=-1))
