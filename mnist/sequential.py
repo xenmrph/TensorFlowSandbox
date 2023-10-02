@@ -23,11 +23,16 @@ model.compile(optimizer='adam',
 model.fit(x_train, y_train, epochs=5)
 model.evaluate(x_test, y_test)
 
+probability_model = tf.keras.Sequential([
+  model,
+  tf.keras.layers.Softmax()
+])
+
 sample_index = 42;
 sample = x_test[sample_index:sample_index + 1]
 sample_label = y_test[sample_index]
 
-prediction = tf.nn.softmax(model.predict(sample)).numpy()[0]
+prediction = probability_model.predict(sample)[0]
 
 print('observed', sample_label)
 print('predicted', np.argmax(prediction, axis=-1))
