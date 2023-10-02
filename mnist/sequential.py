@@ -13,11 +13,11 @@ model = tf.keras.models.Sequential([
   tf.keras.layers.Flatten(input_shape=(28, 28)),
   tf.keras.layers.Dense(128, activation='relu'),
   tf.keras.layers.Dropout(0.2),
-  tf.keras.layers.Dense(10, activation='softmax')
+  tf.keras.layers.Dense(10)
 ])
 
 model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 model.fit(x_train, y_train, epochs=5)
@@ -27,7 +27,7 @@ sample_index = 42;
 sample = x_test[sample_index:sample_index + 1]
 sample_label = y_test[sample_index]
 
-prediction = model.predict(sample)[0]
+prediction = tf.nn.softmax(model.predict(sample)).numpy()[0]
 
 print('observed', sample_label)
 print('predicted', np.argmax(prediction, axis=-1))
